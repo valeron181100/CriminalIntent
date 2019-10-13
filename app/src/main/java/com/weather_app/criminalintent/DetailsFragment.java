@@ -16,6 +16,7 @@ import com.weather_app.criminalintent.models.Crime;
 import com.weather_app.criminalintent.models.CrimeLab;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,9 @@ public class DetailsFragment extends Fragment {
     private EditText mTitleET;
     private Button mDateButton;
     private CheckBox mSolvedCB;
+    private Button mLastButton;
+    private Button mBeginningButton;
+
 
 
     public static DetailsFragment newInstance(UUID crimeId) {
@@ -61,8 +65,9 @@ public class DetailsFragment extends Fragment {
         mTitleET = v.findViewById(R.id.titleET);
         mDateButton = v.findViewById(R.id.dateButton);
         mSolvedCB = v.findViewById(R.id.solvedCB);
-
+        mLastButton = v.findViewById(R.id.lastButton);
         mDateButton = v.findViewById(R.id.dateButton);
+        mBeginningButton = v.findViewById(R.id.beginningButton);
         mDateButton.setText(mCrime.getDate().toString());
 
         final FragmentManager fm = getFragmentManager();
@@ -86,6 +91,7 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mCrime.setTitle(s.toString());
+                CrimeListFragment.addCrimeChangedIndex(CrimeLab.getInstance(getContext()).getCrimes().indexOf(mCrime));
             }
 
             @Override
@@ -96,6 +102,22 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mCrime.setSolved(isChecked);
+                CrimeListFragment.addCrimeChangedIndex(CrimeLab.getInstance(getContext()).getCrimes().indexOf(mCrime));
+            }
+        });
+
+
+        mLastButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((CrimePagerActivity) Objects.requireNonNull(getActivity())).setCurrentPagerItem(CrimeLab.getInstance(getContext()).getSize() - 1);
+            }
+        });
+
+        mBeginningButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((CrimePagerActivity) Objects.requireNonNull(getActivity())).setCurrentPagerItem(0);
             }
         });
 
@@ -108,6 +130,7 @@ public class DetailsFragment extends Fragment {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.DATE_CRIME_DETAILS_TAG);
             mDateButton.setText(date.toString());
             mCrime.setDate(date);
+            CrimeListFragment.addCrimeChangedIndex(CrimeLab.getInstance(getContext()).getCrimes().indexOf(mCrime));
         }
     }
 }

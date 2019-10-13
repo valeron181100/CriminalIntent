@@ -19,17 +19,20 @@ import com.weather_app.criminalintent.androidStuff.CrimeAdapter;
 import com.weather_app.criminalintent.androidStuff.CrimeHolder;
 import com.weather_app.criminalintent.models.Crime;
 
+import java.util.ArrayList;
+
 
 public class CrimeListFragment extends Fragment {
 
     private RecyclerView mCrimeRV;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private static ArrayList<Integer> mCrimeIndicesChanged;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCrimeIndicesChanged = new ArrayList<>();
     }
 
     @Nullable
@@ -52,6 +55,10 @@ public class CrimeListFragment extends Fragment {
         return intent;
     }
 
+    public static void addCrimeChangedIndex(int i){
+        mCrimeIndicesChanged.add(i);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -64,7 +71,9 @@ public class CrimeListFragment extends Fragment {
             mCrimeRV.setAdapter(mAdapter);
         }
         else{
-            mAdapter.notifyDataSetChanged();
+            for (int i = 0; i < mCrimeIndicesChanged.size() ; i++) {
+                mAdapter.notifyItemChanged(mCrimeIndicesChanged.get(i));
+            }
         }
     }
 }

@@ -44,6 +44,11 @@ public class CrimePagerActivity extends AppCompatActivity {
         mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     }
 
+
+    public void setCurrentPagerItem(int index){
+        mViewPager.setCurrentItem(index);
+    }
+
     private class SrollCrimeFragmentsPagerAdapter extends FragmentStatePagerAdapter{
         private Context mContext;
 
@@ -56,8 +61,7 @@ public class CrimePagerActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             Crime crime = CrimeLab.getInstance(mContext).getCrimes().get(position);
-            DetailsFragment fragment = DetailsFragment.newInstance(crime.getID());
-            return fragment;
+            return DetailsFragment.newInstance(crime.getID());
         }
 
         @Override

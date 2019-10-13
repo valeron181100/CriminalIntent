@@ -10,4 +10,6 @@
     
     <string name="ok">Ok</string>
     <string name="date_pick">Date pick:</string>
+    <string name="last">Last</string>
+    <string name="beginning">Beginning</string>
 </resources>
