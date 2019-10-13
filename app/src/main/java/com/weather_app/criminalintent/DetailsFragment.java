@@ -1,5 +1,6 @@
 package com.weather_app.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,15 +15,19 @@ import android.widget.EditText;
 import com.weather_app.criminalintent.models.Crime;
 import com.weather_app.criminalintent.models.CrimeLab;
 
+import java.util.Date;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class DetailsFragment extends Fragment {
 
     public static String CRIME_ID_TAG = "com.weather_app.criminalintent.crimeID";
+    public static final String DIALOG_DATE = "Dialog Date";
+    public static final int DATE_REQUEST_CODE = 0;
     private Crime mCrime;
     private EditText mTitleET;
     private Button mDateButton;
@@ -30,7 +35,6 @@ public class DetailsFragment extends Fragment {
 
 
     public static DetailsFragment newInstance(UUID crimeId) {
-
         Bundle args = new Bundle();
         args.putSerializable(CRIME_ID_TAG, crimeId);
         DetailsFragment fragment = new DetailsFragment();
@@ -46,7 +50,6 @@ public class DetailsFragment extends Fragment {
         Bundle args = getArguments();
         mCrime = CrimeLab.getInstance(getContext()).getCrime((UUID) args.getSerializable(CRIME_ID_TAG));
 
-
     }
 
     @Nullable
@@ -59,10 +62,19 @@ public class DetailsFragment extends Fragment {
         mDateButton = v.findViewById(R.id.dateButton);
         mSolvedCB = v.findViewById(R.id.solvedCB);
 
-
         mDateButton = v.findViewById(R.id.dateButton);
         mDateButton.setText(mCrime.getDate().toString());
-        mDateButton.setEnabled(false);
+
+        final FragmentManager fm = getFragmentManager();
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+                dialog.setTargetFragment(DetailsFragment.this, DATE_REQUEST_CODE);
+                dialog.show(fm, DIALOG_DATE);
+            }
+        });
 
         mTitleET.setText(mCrime.getTitle());
         mSolvedCB.setChecked(mCrime.isSolved());
@@ -88,5 +100,14 @@ public class DetailsFragment extends Fragment {
         });
 
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == DATE_REQUEST_CODE){
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.DATE_CRIME_DETAILS_TAG);
+            mDateButton.setText(date.toString());
+            mCrime.setDate(date);
+        }
     }
 }
