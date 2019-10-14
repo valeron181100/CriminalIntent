@@ -4,12 +4,11 @@
     <string name="details">Details</string>
     <string name="solved">Solved</string>
     <string name="title_activity_crime_list">CrimeListActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    
     <string name="ok">Ok</string>
     <string name="date_pick">Date pick:</string>
     <string name="last">Last</string>
     <string name="beginning">Beginning</string>
+    <string name="new_crime">New Crime</string>
+    <string name="show_crimes_amount">Show crimes amount</string>
+    <string name="hide_crimes_amount">Hide crimes amount</string>
 </resources>

@@ -30,7 +30,7 @@ public class CrimeLab {
     private CrimeLab(Context context){
         mCrimes = new ArrayList<>();
         mContext = context;
-        for(int i = 0; i < 100; i++){
+        for(int i = 0; i < 3; i++){
             Crime crime = new Crime();
             crime.setTitle(getRandomWord());
             crime.setSolved(i % 2 == 0);
@@ -50,6 +50,10 @@ public class CrimeLab {
             }
         }
         return null;
+    }
+
+    public void add(Crime crime){
+        getCrimes().add(crime);
     }
 
     public Crime getCrimeByIndex(int pos){
